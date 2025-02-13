@@ -105,7 +105,7 @@ async def delegate_task(
             service = "Concierge"
 
         # Create a step for this delegation
-        async with cl.Step(name=f"{service} Request", type="agent") as step:
+        async with cl.Step(name=f"{service} Agent", type="agent") as step:
             step.input = request['description']
 
             try:

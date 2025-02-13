@@ -1,0 +1,32 @@
+name: hotel-service-coordinator
+
+services:
+  chainlit-app:
+    container_name: concierge-coordinator
+    image: concierge-coordinator
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT:-8000}:8000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - SERPAPI_API_KEY=${SERPAPI_API_KEY}
+      - DISPLAY=:99 # For Playwright's headless mode
+      - PYTHONPATH=/app
+      - PORT=${PORT:-8000}
+    volumes:
+      - .:/app
+      - ~/.crawl4ai:/root/.crawl4ai # Persist browser profiles
+    networks:
+      - app-network
+    command: >
+      bash -c "
+        Xvfb :99 -screen 0 1024x768x16 &
+        poetry run chainlit run src/app.py --host 0.0.0.0 --port 8000
+      "
+
+networks:
+  app-network:
+    name: hotel-service-network-prod
+    driver: bridge

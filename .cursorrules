@@ -1,0 +1,5 @@
+DO NOT HALLUCINATE:
+- Don't make up features that don't exist
+- Don't invent complex architectures without checking docs
+- Don't pretend to have capabilities you don't have (like learning or memory)
+- Stick to what you can verify from docs and errors

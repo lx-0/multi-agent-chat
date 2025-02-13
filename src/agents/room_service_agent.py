@@ -51,7 +51,7 @@ async def search_menu(ctx: RunContext[HotelDeps], query: str) -> List[Dict]:
     """Search the current menu for items matching the query"""
     # This would be replaced with actual menu database queries
     # For now returning simulated responses
-    async with cl.Step(name="Search Menu", type="tool") as step:
+    async with cl.Step(name="Search Menu Tool", type="tool") as step:
         step.input = query
         output = [
             {

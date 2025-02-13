@@ -10,7 +10,7 @@ from src.models.hotel_models import HotelDeps
 async def web_search(ctx: RunContext[HotelDeps], query: str) -> List[Dict]:
     """Search the web for local information based on the query"""
     # Create a step for the web search
-    async with cl.Step(name="Web Search", type="tool") as step:
+    async with cl.Step(name="Web Search Tool", type="tool") as step:
         step.input = query
 
         # Get SerpAPI key from environment

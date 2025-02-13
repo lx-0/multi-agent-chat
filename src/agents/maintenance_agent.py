@@ -48,42 +48,47 @@ async def check_service(ctx: RunContext[HotelDeps], query: str) -> List[Dict]:
     """Look up service availability and details based on the query"""
     # This would be replaced with actual service system queries
     # For now returning simulated responses
-    if any(word in query.lower() for word in ["towel", "amenity", "supply"]):
-        return [{
-            "type": "supplies",
-            "service": "Room Supplies",
-            "items_available": True,
-            "response_time": "5-10 minutes",
-            "staff_assigned": True,
-            "priority": "normal",
-            "additional_info": "Extra amenities available upon request"
-        }]
-    elif any(word in query.lower() for word in ["ac", "heat", "temperature", "climate"]):
-        return [{
-            "type": "climate",
-            "service": "Climate Control",
-            "technician_available": True,
-            "response_time": "10-15 minutes",
-            "priority": "high",
-            "additional_info": "Temperature adjustment and system check"
-        }]
-    elif any(word in query.lower() for word in ["clean", "housekeeping", "tidy"]):
-        return [{
-            "type": "housekeeping",
-            "service": "Room Cleaning",
-            "staff_available": True,
-            "response_time": "20-30 minutes",
-            "priority": "normal",
-            "services": ["full cleaning", "turndown", "refresh"]
-        }]
-    elif any(word in query.lower() for word in ["repair", "fix", "broken"]):
-        return [{
-            "type": "maintenance",
-            "service": "Repairs",
-            "technician_available": True,
-            "response_time": "30-45 minutes",
-            "priority": "high",
-            "additional_info": "Initial assessment and basic repairs"
-        }]
-    else:
-        return []  # No matching services found
+    async with cl.Step(name="Check Service Tool", type="tool") as step:
+        step.input = query
+        output = []
+        if any(word in query.lower() for word in ["towel", "amenity", "supply"]):
+            output = [{
+                "type": "supplies",
+                "service": "Room Supplies",
+                "items_available": True,
+                "response_time": "5-10 minutes",
+                "staff_assigned": True,
+                "priority": "normal",
+                "additional_info": "Extra amenities available upon request"
+            }]
+        elif any(word in query.lower() for word in ["ac", "heat", "temperature", "climate"]):
+            output = [{
+                "type": "climate",
+                "service": "Climate Control",
+                "technician_available": True,
+                "response_time": "10-15 minutes",
+                "priority": "high",
+                "additional_info": "Temperature adjustment and system check"
+            }]
+        elif any(word in query.lower() for word in ["clean", "housekeeping", "tidy"]):
+            output = [{
+                "type": "housekeeping",
+                "service": "Room Cleaning",
+                "staff_available": True,
+                "response_time": "20-30 minutes",
+                "priority": "normal",
+                "services": ["full cleaning", "turndown", "refresh"]
+            }]
+        elif any(word in query.lower() for word in ["repair", "fix", "broken"]):
+            output = [{
+                "type": "maintenance",
+                "service": "Repairs",
+                "technician_available": True,
+                "response_time": "30-45 minutes",
+                "priority": "high",
+                "additional_info": "Initial assessment and basic repairs"
+            }]
+        else:
+            output = []  # No matching services found
+        step.output = output
+        return output
